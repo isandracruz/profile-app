@@ -74,8 +74,7 @@ const deleteProfile = async(req: Request, res: Response, next: NextFunction) => 
 };
 
 const addFriends = async (req: Request, res: Response, next: NextFunction) => {
-    try {   
-        console.log(Array.from(req.body.friends).length)
+    try { 
         if (req.params.profileId && Array.from(req.body.friends).length > 0) {            
             const profileService = new ProfileService();
             const profileUpdated = await profileService.addFriends(req.params.profileId, req.body.friends);
