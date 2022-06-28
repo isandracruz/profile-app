@@ -10,7 +10,7 @@ const profileSchema = new mongoose.Schema({
     state: String,
     zipcode: String,
     available: Boolean,
-    friend: Object
+    friends: Object
 });
 
 const Profile = mongoose.model('Profile', profileSchema);

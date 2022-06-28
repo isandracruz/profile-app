@@ -9,5 +9,5 @@ export default interface ProfileInterface {
     state: string;
     zipcode: string;
     available: boolean;
-    friend?: ProfileInterface[];
+    friends: string[];
 }

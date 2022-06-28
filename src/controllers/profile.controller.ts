@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
+import ProfileInterface from "../interfaces/profile.interface";
 import Profile from '../schemas/profile.schema';
 import ProfileService from '../services/profile.service';
 
@@ -37,6 +38,7 @@ const createProfile = async (req: Request, res: Response, next: NextFunction) =>
             state: req.body.state,
             zipcode: req.body.zipcode,
             available: req.body.available,
+            friends: req.body.friends ? req.body.friends: []
         }
 
         const profileService = new ProfileService();
@@ -71,10 +73,40 @@ const deleteProfile = async(req: Request, res: Response, next: NextFunction) => 
     }
 };
 
+const addFriends = async (req: Request, res: Response, next: NextFunction) => {
+    try {   
+        console.log(Array.from(req.body.friends).length)
+        if (req.params.profileId && Array.from(req.body.friends).length > 0) {            
+            const profileService = new ProfileService();
+            const profileUpdated = await profileService.addFriends(req.params.profileId, req.body.friends);
+            res.json(profileUpdated);
+        }  
+    } catch (error) {
+        res.status(500).json({
+            message: "Error processing request"
+        });
+    }
+};
+
+const getFriends = async (req: Request, res: Response, next: NextFunction) => {
+    try {  
+        if (req.params.profileId)  {
+            const profile = await Profile.find({_id: new mongoose.Types.ObjectId(String(req.params.profileId))}, {friends: 1, _id: 0}); 
+            res.json(profile[0]);
+        } 
+    } catch (error) {
+        res.status(500).json({
+            message: "Error processing request"
+        });
+    }
+};
+
 export default {
     getProfiles,
     getProfile,
     createProfile,
     updateProfile,
-    deleteProfile
+    deleteProfile,
+    addFriends,
+    getFriends
 }
