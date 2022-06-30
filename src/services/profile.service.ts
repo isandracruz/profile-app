@@ -15,11 +15,11 @@ class ProfileService {
 
         await Promise.all(
             existsFriends.map(async friend => {
-                await Profile.findOneAndUpdate(
+               /* await Profile.findOneAndUpdate(
                     {_id: friend},
                     {$addToSet: {"friends": {$each: [new mongoose.Types.ObjectId(String(profileId))]}}},
                     {new: true}
-                );
+                );*/
     
                 await Profile.findOneAndUpdate(
                     {_id: new mongoose.Types.ObjectId(String(profileId))},

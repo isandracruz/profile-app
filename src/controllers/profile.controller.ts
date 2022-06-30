@@ -90,8 +90,8 @@ const addFriends = async (req: Request, res: Response, next: NextFunction) => {
 const getFriends = async (req: Request, res: Response, next: NextFunction) => {
     try {  
         if (req.params.profileId)  {
-            const profile = await Profile.find({_id: new mongoose.Types.ObjectId(String(req.params.profileId))}, {friends: 1, _id: 0}); 
-            res.json(profile[0]);
+            const friends = await Profile.find({friends: {$in: [new mongoose.Types.ObjectId(String(req.params.profileId))]}}); 
+            res.json({friends: friends});
         } 
     } catch (error) {
         res.status(500).json({
